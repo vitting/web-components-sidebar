@@ -7,14 +7,17 @@
         display: block;
       }
 
-      .cvn-sidebar-footer {
+      #cvnSidebarFooter {
         position: absolute;
         bottom: 20px;
         left: 0;
         padding: 10px;
+        font-size: 1em;
+        color: white;
+        background-color: #370037;
       }
     </style>
-    <div class="cvn-sidebar-footer"><slot></slot></div>
+    <div id="cvnSidebarFooter"><slot></slot></div>
   </template>
 
   <script>
@@ -22,11 +25,16 @@
       static get is() { return 'cvn-sidebar-footer'; }
       static get properties() {
         return {
-          prop1: {
+          alignText: {
             type: String,
-            value: 'cvn-sidebar'
+            value: "center"
           }
         };
+      }
+
+      ready() {
+        super.ready();
+        this.$.cvnSidebarFooter.style.textAlign = this.alignText;
       }
     }
 

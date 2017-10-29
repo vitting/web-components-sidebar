@@ -11,14 +11,44 @@
         position: fixed;
         top: 0;
         left: 0;
-        background-color: lightblue;
+        background-color: #6F256F;
         height: 100vh;
         width: 200px;
         padding: 10px;
+        font-family: Arial, Helvetica, sans-serif;
+      }
+
+      #cvn-sidebar-close {
+        background: none;
+        border-style: none;
+        border-radius: 50%;
+        line-height: 1em;
+        background-color: #370037;
+        padding: 0;
+        width: 50px;
+        height: 50px;
+        font-size: 2.5em;
+        color: white;
+        cursor: pointer;
+        outline: none;
+      }
+
+      #cvn-sidebar-close:hover {
+        background-color: #530E53
+      }
+
+      header {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 10px;
+        margin-bottom: 20px;
+        margin-right: 10px;
       }
     </style>
     <div id="cvn-sidebar-container">
-      <header>Header</header>  
+      <header>
+        <button id="cvn-sidebar-close" type="button" on-click="closeSidebar">&times;</button>
+      </header>  
       <div id="cvn-sidebar-menu-items">
         <slot></slot>        
       </div>
@@ -35,6 +65,10 @@
             value: 'cvn-sidebar'
           }
         };
+      }
+
+      closeSidebar() {
+        this.shadowRoot.querySelector("#cvn-sidebar-container").style.display = "none";
       }
     }
 
