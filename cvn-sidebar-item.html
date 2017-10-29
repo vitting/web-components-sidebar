@@ -1,0 +1,32 @@
+<link rel="import" href="../polymer/polymer-element.html">
+
+<dom-module id="cvn-sidebar-item">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+
+      .cvn-sidebar-item {
+          padding: 10px 0;
+      }
+    </style>
+    <div class="cvn-sidebar-item"><slot></slot></div>
+  </template>
+
+  <script>
+    class CvnSidebarItem extends Polymer.Element {
+      static get is() { return 'cvn-sidebar-item'; }
+      static get properties() {
+        return {
+          prop1: {
+            type: String,
+            value: 'cvn-sidebar'
+          }
+        };
+      }
+    }
+
+    window.customElements.define(CvnSidebarItem.is, CvnSidebarItem);
+  </script>
+</dom-module>
