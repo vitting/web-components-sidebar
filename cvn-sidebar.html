@@ -76,7 +76,7 @@
         return {
           show: {
             type: String,
-            value: false,
+            value: "false",
             reflectToAttribute: true,
             observer: "_openHideSidebar"
           }
@@ -85,33 +85,37 @@
 
       ready() {
         super.ready();
+        
+        this.$.cvnSidebarContainer.addEventListener("animationend", this._sendEvents.bind(this));
+      }
 
-        this.$.cvnSidebarContainer.addEventListener("animationend", ()=> {
-          if (this.show === "false") {
-            this.$.cvnSidebarContainer.style.display = "none";
-            this.dispatchEvent(new CustomEvent("sidebar-closed"));
-          } else if (this.show === "true") {
-            this.dispatchEvent(new CustomEvent("sidebar-opend"));
-          }
-        });
+      _sendEvents() {
+        if (this.show === "false") {  
+          this.dispatchEvent(new CustomEvent("sidebar-closed"));
+          //this.$.cvnSidebarContainer.style.display = "none";
+        } else if (this.show === "true") {
+          this.dispatchEvent(new CustomEvent("sidebar-open"));
+        }
       }
 
       _closeSidebar() {
+        this.dispatchEvent(new CustomEvent("sidebar-closing"));
         this.$.cvnSidebarContainer.style.animation = "slideOut 500ms ease-in 0s 1 forwards";
+        this.show = "false";
       }
 
       _openSidebar() {        
+        this.dispatchEvent(new CustomEvent("sidebar-opening"));
         this.$.cvnSidebarContainer.style.display = "block";
         this.$.cvnSidebarContainer.style.animation = "slideIn 500ms ease-in 0s 1 forwards";
+        this.show = "true";
       }
 
       _openHideSidebar(newValue, oldValue) {
         if (oldValue) {
           if (newValue === "true") {
-            this.dispatchEvent(new CustomEvent("sidebar-opening"));
             this._openSidebar();
           } else if (newValue === "false") {
-            this.dispatchEvent(new CustomEvent("sidebar-closing"));
             this._closeSidebar();
           }
         } else { //Init
@@ -121,7 +125,6 @@
             this.$.cvnSidebarContainer.style.display = "none";
           }
         }
-        
       }
     }
 

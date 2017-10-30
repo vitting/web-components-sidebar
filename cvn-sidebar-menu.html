@@ -1,0 +1,135 @@
+<link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="cvn-sidebar-style.html">
+
+<dom-module id="cvn-sidebar-menu">
+  <template>
+    <style include="sidebar-style">
+        @keyframes fadeIn {
+            from {
+                opacity: 0
+            }
+            to {    
+                opacity: 0.3;
+            }
+        }      
+
+        @keyframes fadeOut {
+            from {
+                opacity: 1
+            }
+            to {    
+                opacity: 0;
+            }
+        }
+
+        :host {
+            display: block;
+        }
+
+        #cvnSidebarMenu {
+            width: 60px;
+            height: 40px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            box-sizing: border-box;
+            opacity: 0.3;
+            transition: opacity 500ms;
+        }
+
+        #cvnSidebarMenu:hover {
+            opacity: 1;
+        }
+
+        .sidebar-menu-outer-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+        }
+
+        .sidebar-menu-container {
+            width: 30px;
+            cursor: pointer;
+        }
+
+        .sidebar-menu {
+            padding: 2px 0;
+            margin-bottom: 3px;
+            border-radius: 8px;;
+        }
+
+        .sidebar-menu:last-child {
+            margin-bottom: 0;
+        }
+    </style>
+    <div id="cvnSidebarMenu" class="bgcolor-primary-0">
+        <div class="sidebar-menu-outer-container">
+            <div class="sidebar-menu-container">
+                <div class="sidebar-menu bgcolor-primary-2"></div>
+                <div class="sidebar-menu bgcolor-primary-2"></div>
+                <div class="sidebar-menu bgcolor-primary-2"></div>
+            </div>
+        </div>
+    </div>
+  </template>
+
+  <script>
+    class CvnSidebarMenu extends Polymer.Element {
+      static get is() { return 'cvn-sidebar-menu'; }
+      static get properties() {
+        return {
+          position: {
+            type: String,
+            value: "left",
+            reflectToAttribute: true,
+            observer: "_positionMenu"
+          },
+          show: {
+              type: String,
+              value: "false",
+              reflectToAttribute: true,
+              observer: "_showHideMenu",
+          }
+        };
+      }
+
+      ready() {
+        super.ready();
+
+        let menu = this.$.cvnSidebarMenu.querySelector(".sidebar-menu-container");
+        menu.addEventListener("click", () => {
+            this.show = "false";
+            this.dispatchEvent(new CustomEvent("sidebar-menu-clicked"));
+        });
+      }
+
+      _positionMenu(newValue, oldValue) {
+          if (newValue) {
+              if (newValue === "left") {
+                this.$.cvnSidebarMenu.style.right = "auto";
+                this.$.cvnSidebarMenu.style.left = 0;
+              } else if (newValue === "right") {
+                this.$.cvnSidebarMenu.style.left = "auto";
+                this.$.cvnSidebarMenu.style.right = "0";
+              }
+          }
+      }
+
+      _showHideMenu(newValue, oldValue) {
+        if (newValue === "true") {
+            this.$.cvnSidebarMenu.style.display = "block";
+            this.dispatchEvent(new CustomEvent("sidebar-menu-shown"));
+        } else {
+            this.$.cvnSidebarMenu.style.display = "none";
+            this.dispatchEvent(new CustomEvent("sidebar-menu-hidden"));
+        }
+      }
+    }
+
+    window.customElements.define(CvnSidebarMenu.is, CvnSidebarMenu);
+  </script>
+</dom-module>
+

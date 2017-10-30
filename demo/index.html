@@ -14,9 +14,11 @@
     <link rel="import" href="../cvn-sidebar-item.html">
     <link rel="import" href="../cvn-sidebar-footer.html">
     <link rel="import" href="../cvn-sidebar-user.html">
+    <link rel="import" href="../cvn-sidebar-menu.html">
   </head>
   <body>
-    <cvn-sidebar show="true">
+    <cvn-sidebar-menu position="right" show="true"></cvn-sidebar-menu>
+    <cvn-sidebar show="false">
       <cvn-sidebar-user>Christian Vitting Nicolaisen</cvn-sidebar-user>
       <cvn-sidebar-item type="text">Dette er en titel</cvn-sidebar-item>
       <cvn-sidebar-item id="testdata" type="button" data="">Dette er sidebar 1</cvn-sidebar-item>
@@ -80,17 +82,26 @@
     Officia, expedita, modi enim ut, omnis illum quo sed debitis quia at iusto. Quaerat, nihil minus magnam laudantium hic aliquid libero excepturi consequatur unde maxime fugiat! Totam iusto cumque ipsa.</div>
     <script>
       function test() {
-        let side = document.querySelector("cvn-sidebar");
-        let testdata = side.querySelector("#testdata");
-        console.log(testdata);
-        let a = {"a":"test","b":false,"c":23,"d":"test2"};
-        testdata.setAttribute("data", JSON.stringify(a));
+        let side = document.querySelector("cvn-sidebar-menu");
+        let attr = side.getAttribute("show");
+        if (attr === "true") {
+          side.setAttribute("show", "false");
+        } else {
+          side.setAttribute("show", "true");
+        }
       }
 
       document.addEventListener("DOMContentLoaded", function() {
-        let container = document.querySelector("cvn-sidebar");
-        container.addEventListener("sidebar-closed", function() {
-          console.log("sidebar-closed");
+        let side = document.querySelector("cvn-sidebar");
+        side.addEventListener("sidebar-closed", function() {
+          let menu = document.querySelector("cvn-sidebar-menu");
+          menu.setAttribute("show", "true");  
+        });
+
+        let menu = document.querySelector("cvn-sidebar-menu");
+        menu.addEventListener("sidebar-menu-clicked", () => {
+          let sidebar = document.querySelector("cvn-sidebar");
+          sidebar.setAttribute("show", "true");
         });
 
         let container2 = document.querySelectorAll("cvn-sidebar-item");
