@@ -4,21 +4,21 @@
 <dom-module id="cvn-sidebar-menu">
   <template>
     <style include="sidebar-style">
-        @keyframes fadeIn {
+        @keyframes slideIn {
             from {
-                opacity: 0
+                transform: translateY(-70px)
             }
             to {    
-                opacity: 0.3;
+                transform: translateY(0)
             }
         }      
 
-        @keyframes fadeOut {
+        @keyframes slideOut {
             from {
-                opacity: 1
+                transform: translateY(0)
             }
             to {    
-                opacity: 0;
+                transform: translateY(-70px)
             }
         }
 
@@ -120,10 +120,10 @@
 
       _showHideMenu(newValue, oldValue) {
         if (newValue === "true") {
-            this.$.cvnSidebarMenu.style.display = "block";
+            this.$.cvnSidebarMenu.style.animation = "slideIn 250ms ease-in 0s 1 forwards"
             this.dispatchEvent(new CustomEvent("sidebar-menu-shown"));
         } else {
-            this.$.cvnSidebarMenu.style.display = "none";
+            this.$.cvnSidebarMenu.style.animation = "slideOut 250ms ease-in 0s 1 forwards"
             this.dispatchEvent(new CustomEvent("sidebar-menu-hidden"));
         }
       }
