@@ -1,0 +1,64 @@
+<link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="cvn-sidebar-style.html">
+
+<dom-module id="cvn-sidebar-user">
+    <template>
+        <style include="sidebar-style">
+             :host {
+                display: block;
+            }
+
+            #cvnSidebarUser {
+                margin-bottom: 10px;
+                display: flex;
+                font-size: 0.7em;
+            }
+
+            img {
+                width: 50px;
+                border: 1px solid #C6B43A;
+            }
+
+            .sidebar-user-name {
+                margin-left: 10px;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-around;
+            }
+
+            .sidebar-user-loggedin {
+                margin-bottom: 5px;
+            }
+        </style>
+        <div id="cvnSidebarUser" class="">
+            <div><img src$="[[importPath]]images/face.png"></div>
+            <div class="sidebar-user-name">
+                <div class="sidebar-user-loggedin color-primary-1">Logget ind som:</div>
+                <div class="sidebar-default-text-color color-primary-1"><slot></slot></div>   
+            </div>
+            
+        </div>
+    </template>
+
+    <script>
+        class CvnSidebarUser extends Polymer.Element {
+            static get is() {
+                return 'cvn-sidebar-user';
+            }
+            static get properties() {
+                return {
+                    show: {
+                        type: Boolean,
+                        value: true
+                    }
+                };
+            }
+
+            ready() {
+                super.ready();
+            }
+        }
+
+        window.customElements.define(CvnSidebarUser.is, CvnSidebarUser);
+    </script>
+</dom-module>
