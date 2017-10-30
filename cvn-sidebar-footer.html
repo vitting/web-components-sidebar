@@ -1,23 +1,22 @@
 <link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="cvn-sidebar-style.html">
 
 <dom-module id="cvn-sidebar-footer">
   <template>
-    <style>
+    <style include="sidebar-style">
       :host {
         display: block;
       }
 
       #cvnSidebarFooter {
         position: absolute;
-        bottom: 20px;
+        bottom: 0;
         left: 0;
         padding: 10px;
-        font-size: 1em;
-        color: white;
-        background-color: #370037;
+        font-size: 0.8em;
       }
     </style>
-    <div id="cvnSidebarFooter"><slot></slot></div>
+    <div id="cvnSidebarFooter" class="bgcolor-primary-3 color-primary-2"><slot></slot></div>
   </template>
 
   <script>

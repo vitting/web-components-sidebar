@@ -13,17 +13,18 @@
     <link rel="import" href="../cvn-sidebar.html">
     <link rel="import" href="../cvn-sidebar-item.html">
     <link rel="import" href="../cvn-sidebar-footer.html">
-
-    <!-- <custom-style>
-      <style is="custom-style" include="demo-pages-shared-styles">
-      </style>
-    </custom-style> -->
+    <link rel="import" href="../cvn-sidebar-user.html">
   </head>
   <body>
     <cvn-sidebar>
-      <cvn-sidebar-item>Dette er sidebar 1</cvn-sidebar-item>
-      <cvn-sidebar-item>Dette er sidebar 2</cvn-sidebar-item>
-      <cvn-sidebar-item>Dette er sidebar 3</cvn-sidebar-item>
+      <cvn-sidebar-user>Christian Vitting Nicolaisen</cvn-sidebar-user>
+      <cvn-sidebar-item type="text">Dette er en titel</cvn-sidebar-item>
+      <cvn-sidebar-item type="button">Dette er sidebar 1</cvn-sidebar-item>
+      <cvn-sidebar-item type="button">Dette er sidebar 2</cvn-sidebar-item>
+      <cvn-sidebar-item type="text">Dette er en titel</cvn-sidebar-item>
+      <cvn-sidebar-item type="button">Dette er sidebar 3</cvn-sidebar-item>
+      <cvn-sidebar-item type="button">Dette er sidebar 4</cvn-sidebar-item>
+      <cvn-sidebar-item type="button">Dette er sidebar 5</cvn-sidebar-item>
       <cvn-sidebar-footer align-text="center">Dette er en footer med noget indhold</cvn-sidebar-footer>
     </cvn-sidebar>
     <div>Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut dicta eum, accusantium placeat sunt perspiciatis quidem asperiores consequuntur fuga modi suscipit aliquid impedit voluptatum a, blanditiis laborum, fugiat quae commodi!
@@ -76,13 +77,21 @@
     Quo labore tenetur in dolorem amet nihil enim eius accusamus sed, a maiores illo illum doloribus temporibus repellendus necessitatibus autem cum est quia. Quas velit odio voluptates deleniti necessitatibus perferendis.
     Ea pariatur iusto impedit accusantium praesentium fugiat illum molestias ipsa optio, necessitatibus commodi amet autem dolorem reprehenderit inventore nesciunt. Nam ducimus quos placeat aliquam aliquid doloremque exercitationem modi libero aspernatur.
     Officia, expedita, modi enim ut, omnis illum quo sed debitis quia at iusto. Quaerat, nihil minus magnam laudantium hic aliquid libero excepturi consequatur unde maxime fugiat! Totam iusto cumque ipsa.</div>
-    <!-- <div class="vertical-section-container centered">
-      <h3>Basic cvn-sidebar demo</h3>
-      <demo-snippet>
-        <template>
-          
-        </template>
-      </demo-snippet>
-    </div> -->
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+        let container = document.querySelector("cvn-sidebar");
+        container.addEventListener("sidebar-closed", function() {
+          console.log("sidebar-closed");
+        });
+
+        let container2 = document.querySelectorAll("cvn-sidebar-item");
+        container2.forEach((element) => {
+          element.addEventListener("sidebar-item-clicked", function(e) {
+            console.log(e.detail);
+          });
+        });
+        
+      });
+    </script>
   </body>
 </html>

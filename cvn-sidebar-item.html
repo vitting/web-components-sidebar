@@ -1,24 +1,27 @@
 <link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="cvn-sidebar-style.html">
 
 <dom-module id="cvn-sidebar-item">
   <template>
-    <style>
+    <style include="sidebar-style">
       :host {
         display: block;
       }
 
-      .cvn-sidebar-item {
+      #cvnSidebarItem.sidebar-item-button {
           padding: 10px 0;
-          font-size: 1.2em;
-          color: white;
+          font-size: 1em;
           cursor: pointer;
       }
 
-      .cvn-sidebar-item:hover {
-        color: #A66FA6;
+      #cvnSidebarItem.sidebar-item-text {
+        padding: 5px 10px;
+        margin-left: -20px;
+        margin-right: -10px;
+        cursor: default;
       }
     </style>
-    <div class="cvn-sidebar-item"><slot></slot></div>
+    <div id="cvnSidebarItem" class="sidebar-item-button sidebar-default-text-color hover-color-primary-1"><slot></slot></div>
   </template>
 
   <script>
@@ -26,14 +29,49 @@
       static get is() { return 'cvn-sidebar-item'; }
       static get properties() {
         return {
-          prop1: {
+          type: {
             type: String,
-            value: 'cvn-sidebar'
+            value: "button"
+          },
+          id: {
+            type: String,
+            value: ""
+          },
+          data: {
+            type: Object,
+            value: function() { return {}; }
+          },
+          link: {
+            type: String,
+            value: ""
           }
         };
+      }
+
+      ready() {
+       super.ready();
+       if (this.type === "text")  {
+        this.$.cvnSidebarItem.classList.remove("sidebar-item-button");
+        this.$.cvnSidebarItem.classList.remove("sidebar-default-text-color");
+        this.$.cvnSidebarItem.classList.remove("hover-color-primary-1");
+        this.$.cvnSidebarItem.classList.add("sidebar-item-text");
+        this.$.cvnSidebarItem.classList.add("bgcolor-primary-3");
+        this.$.cvnSidebarItem.classList.add("color-primary-2");
+       } else {
+        let details = {
+          id: this.id,
+          data: this.data,
+          link: this.link
+        };
+
+        this.$.cvnSidebarItem.addEventListener("click", () => {
+          this.dispatchEvent(new CustomEvent("sidebar-item-clicked", {detail: details}));
+        });
+       }
       }
     }
 
     window.customElements.define(CvnSidebarItem.is, CvnSidebarItem);
   </script>
 </dom-module>
+
