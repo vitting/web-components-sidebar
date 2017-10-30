@@ -19,8 +19,8 @@
     <cvn-sidebar show="true">
       <cvn-sidebar-user>Christian Vitting Nicolaisen</cvn-sidebar-user>
       <cvn-sidebar-item type="text">Dette er en titel</cvn-sidebar-item>
-      <cvn-sidebar-item type="button">Dette er sidebar 1</cvn-sidebar-item>
-      <cvn-sidebar-item type="button">Dette er sidebar 2</cvn-sidebar-item>
+      <cvn-sidebar-item id="testdata" type="button" data="">Dette er sidebar 1</cvn-sidebar-item>
+      <cvn-sidebar-item type="button" link="/send/me/?somewhere=a&test=2">Dette er sidebar 2</cvn-sidebar-item>
       <cvn-sidebar-item type="text">Dette er en titel</cvn-sidebar-item>
       <cvn-sidebar-item type="button">Dette er sidebar 3</cvn-sidebar-item>
       <cvn-sidebar-item type="button">Dette er sidebar 4</cvn-sidebar-item>
@@ -81,13 +81,10 @@
     <script>
       function test() {
         let side = document.querySelector("cvn-sidebar");
-        let attr = side.getAttribute("show");
-
-        if (attr === "true") {
-          side.setAttribute("show", "false");
-        } else {
-          side.setAttribute("show", "true");
-        }
+        let testdata = side.querySelector("#testdata");
+        console.log(testdata);
+        let a = {"a":"test","b":false,"c":23,"d":"test2"};
+        testdata.setAttribute("data", JSON.stringify(a));
       }
 
       document.addEventListener("DOMContentLoaded", function() {
@@ -99,7 +96,8 @@
         let container2 = document.querySelectorAll("cvn-sidebar-item");
         container2.forEach((element) => {
           element.addEventListener("sidebar-item-clicked", function(e) {
-            console.log(e.detail);
+
+            console.log("clicked", e.detail);
           });
         });
       });

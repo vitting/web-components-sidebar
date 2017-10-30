@@ -38,8 +38,8 @@
             value: ""
           },
           data: {
-            type: Object,
-            value: function() { return {}; }
+            type: String,
+            value: ""
           },
           link: {
             type: String,
@@ -49,25 +49,38 @@
       }
 
       ready() {
-       super.ready();
-       if (this.type === "text")  {
-        this.$.cvnSidebarItem.classList.remove("sidebar-item-button");
-        this.$.cvnSidebarItem.classList.remove("sidebar-default-text-color");
-        this.$.cvnSidebarItem.classList.remove("hover-color-primary-1");
-        this.$.cvnSidebarItem.classList.add("sidebar-item-text");
-        this.$.cvnSidebarItem.classList.add("bgcolor-primary-3");
-        this.$.cvnSidebarItem.classList.add("color-primary-2");
-       } else {
+        super.ready();
+        if (this.type === "text") {
+          this.$.cvnSidebarItem.classList.remove("sidebar-item-button");
+          this.$.cvnSidebarItem.classList.remove("sidebar-default-text-color");
+          this.$.cvnSidebarItem.classList.remove("hover-color-primary-1");
+          this.$.cvnSidebarItem.classList.add("sidebar-item-text");
+          this.$.cvnSidebarItem.classList.add("bgcolor-primary-3");
+          this.$.cvnSidebarItem.classList.add("color-primary-2");
+        } else {
+          this.$.cvnSidebarItem.addEventListener("click", this._sendClickEvent.bind(this));
+        }
+      }
+
+      _sendClickEvent() {
+        let details = this._getEventData();
+        this.dispatchEvent(new CustomEvent("sidebar-item-clicked", { detail: details }));
+      }
+
+      _getEventData() {
+        let data = {};
+
+        if (this.data) {
+          data = JSON.parse(this.data);
+        }
+
         let details = {
           id: this.id,
-          data: this.data,
+          data: data,
           link: this.link
         };
 
-        this.$.cvnSidebarItem.addEventListener("click", () => {
-          this.dispatchEvent(new CustomEvent("sidebar-item-clicked", {detail: details}));
-        });
-       }
+        return details;
       }
     }
 
