@@ -15,10 +15,10 @@
 
       @keyframes slideIn {
         from {
-          width: 0;
+          transform: translateX(-230px);
         }
         to {
-          width: 200px;
+          transform: translateX(0);
         }
       }
 
@@ -35,6 +35,7 @@
         width: 200px;
         padding: 10px 10px 10px 20px; 
         font-family: Arial, Helvetica, sans-serif;
+        display: none;
       }
 
       #cvnSidebarClose {
@@ -60,7 +61,7 @@
     </style>
     <div id="cvnSidebarContainer" class="bgcolor-primary-0">
       <header>
-        <button id="cvnSidebarClose" class="bgcolor-primary-3 hover-bgcolor-primary-1" type="button" on-click="closeSidebar">&times;</button>
+        <button id="cvnSidebarClose" class="bgcolor-primary-3 hover-bgcolor-primary-1" type="button" on-click="_closeSidebar">&times;</button>
       </header>  
       <div id="cvnSidebarMenuItems">
         <slot></slot>        
@@ -73,9 +74,11 @@
       static get is() { return 'cvn-sidebar'; }
       static get properties() {
         return {
-          prop1: {
+          show: {
             type: String,
-            value: 'cvn-sidebar'
+            value: false,
+            reflectToAttribute: true,
+            observer: "_openHideSidebar"
           }
         };
       }
@@ -84,12 +87,41 @@
         super.ready();
 
         this.$.cvnSidebarContainer.addEventListener("animationend", ()=> {
-          this.dispatchEvent(new CustomEvent("sidebar-closed"));
+          if (this.show === "false") {
+            this.$.cvnSidebarContainer.style.display = "none";
+            this.dispatchEvent(new CustomEvent("sidebar-closed"));
+          } else if (this.show === "true") {
+            this.dispatchEvent(new CustomEvent("sidebar-opend"));
+          }
         });
       }
 
-      closeSidebar() {
+      _closeSidebar() {
         this.$.cvnSidebarContainer.style.animation = "slideOut 500ms ease-in 0s 1 forwards";
+      }
+
+      _openSidebar() {        
+        this.$.cvnSidebarContainer.style.display = "block";
+        this.$.cvnSidebarContainer.style.animation = "slideIn 500ms ease-in 0s 1 forwards";
+      }
+
+      _openHideSidebar(newValue, oldValue) {
+        if (oldValue) {
+          if (newValue === "true") {
+            this.dispatchEvent(new CustomEvent("sidebar-opening"));
+            this._openSidebar();
+          } else if (newValue === "false") {
+            this.dispatchEvent(new CustomEvent("sidebar-closing"));
+            this._closeSidebar();
+          }
+        } else { //Init
+          if (newValue === "true") {
+            this.$.cvnSidebarContainer.style.display = "block";
+          } else if (newValue === "false") {
+            this.$.cvnSidebarContainer.style.display = "none";
+          }
+        }
+        
       }
     }
 
