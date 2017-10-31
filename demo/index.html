@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
 
     <title>cvn-sidebar demo</title>
-
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
 
     <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
@@ -15,22 +15,45 @@
     <link rel="import" href="../cvn-sidebar-footer.html">
     <link rel="import" href="../cvn-sidebar-user.html">
     <link rel="import" href="../cvn-sidebar-menu.html">
+    <style>
+      cvn-sidebar-item i {
+        margin-right: 5px;
+      }
+
+      .container {
+        display: flex;
+      }
+
+      .container div {
+        padding: 10px;
+      }
+
+      .container div:first-child {
+        flex-basis: 40%;
+      }
+
+      .container div:last-child {
+        flex-basis: 80%;
+      }
+    </style>
   </head>
   <body>
-    <cvn-sidebar-menu position="right" show="false"></cvn-sidebar-menu>
-    <cvn-sidebar show="false">
-      <cvn-sidebar-user>Christian Vitting Nicolaisen</cvn-sidebar-user>
-      <cvn-sidebar-item type="text">Dette er en titel</cvn-sidebar-item>
-      <cvn-sidebar-item id="testdata" type="button" data="">Dette er sidebar 1</cvn-sidebar-item>
-      <cvn-sidebar-item type="button" link="/send/me/?somewhere=a&test=2">Dette er sidebar 2</cvn-sidebar-item>
-      <cvn-sidebar-item type="text">Dette er en titel</cvn-sidebar-item>
+    <cvn-sidebar-menu position="right" show="true"></cvn-sidebar-menu>
+    <cvn-sidebar show="false" close-on-outside-click="true">
+      <cvn-sidebar-user show-login-text="true">Christian Vitting Nicolaisen</cvn-sidebar-user>
+      <cvn-sidebar-item type="text">Dette er en overskrift</cvn-sidebar-item>
+      <cvn-sidebar-item id="testdata" type="button" data=""><i class="fa fa-bandcamp" aria-hidden="true"></i>Dette er sidebar 1</cvn-sidebar-item>
+      <cvn-sidebar-item type="button" link="/send/me/?somewhere=a&test=2"><i class="fa fa-snowflake-o" aria-hidden="true"></i>Dette er sidebar 2</cvn-sidebar-item>
+      <cvn-sidebar-item type="text">Dette er en overskrift</cvn-sidebar-item>
       <cvn-sidebar-item type="button">Dette er sidebar 3</cvn-sidebar-item>
       <cvn-sidebar-item type="button">Dette er sidebar 4</cvn-sidebar-item>
       <cvn-sidebar-item type="button">Dette er sidebar 5</cvn-sidebar-item>
-      <cvn-sidebar-footer align-text="center">Dette er en footer med noget indhold</cvn-sidebar-footer>
+      <cvn-sidebar-footer align-text="center">Jeg er en footer og jeg er glad</cvn-sidebar-footer>
     </cvn-sidebar>
-    <!-- <div style="background-color: yellow;"><button style="margin-left: 50vw;" type="button" onclick="test()">Test</button></div> -->
-    <div>Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut dicta eum, accusantium placeat sunt perspiciatis quidem asperiores consequuntur fuga modi suscipit aliquid impedit voluptatum a, blanditiis laborum, fugiat quae commodi!
+    
+    <div class="container">
+    <div>
+    Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut dicta eum, accusantium placeat sunt perspiciatis quidem asperiores consequuntur fuga modi suscipit aliquid impedit voluptatum a, blanditiis laborum, fugiat quae commodi!
     Vitae perferendis recusandae quisquam culpa error expedita eligendi natus voluptatum? Voluptatem doloremque laborum sit! Totam, temporibus. Totam, obcaecati nemo delectus placeat natus atque dolorum ratione impedit, provident ipsa, harum libero!
     Delectus sapiente, praesentium sequi, vero, illum adipisci quasi cum mollitia eos assumenda dolores explicabo quod iusto rem unde officiis minus placeat expedita impedit voluptatem. Facilis excepturi earum ullam temporibus iusto.
     Rerum soluta ut dolorum quas ullam earum voluptas eius enim eum dolore. Deserunt dolorum voluptatum ex nisi quo saepe quaerat quia voluptatem praesentium facilis modi, asperiores quos? Quam, dicta explicabo.
@@ -55,6 +78,8 @@
     Numquam blanditiis non incidunt eligendi, voluptas corporis deleniti tempora in ad? Cupiditate voluptatibus tempore veniam incidunt vero asperiores ducimus tempora fuga, fugit, aliquam molestiae beatae delectus quae veritatis nam ipsum?
     Natus nam ad omnis, corrupti eius dicta sapiente, excepturi ex reprehenderit quaerat vero neque quas vitae quis eum quod doloribus nesciunt necessitatibus, architecto dignissimos eveniet nemo ipsa. Aperiam, obcaecati delectus.
     Consequuntur autem facilis reiciendis adipisci itaque in hic ducimus quaerat cumque, obcaecati repellendus optio, neque esse, nesciunt tempora odit suscipit aspernatur illo laudantium fugit quae. Tenetur quia deserunt fugiat minus!
+    </div>
+    <div>
     Enim accusantium corporis reprehenderit iure doloribus fuga illum, dolore sapiente iusto doloremque dolor ullam possimus asperiores eligendi molestias sint fugiat, quasi at saepe eveniet odio laboriosam. Accusantium laudantium odio aliquid.
     Autem repudiandae at eius et corrupti, incidunt libero temporibus cupiditate veniam pariatur in! Quod, eos assumenda. Nam dolor accusamus exercitationem illo, dolorem ex ad! Hic, quisquam voluptatem! Quas, vel eveniet.
     Non, reprehenderit sit similique exercitationem fugit veniam tenetur voluptas officia perferendis rerum temporibus, aliquid ab dolorum. Aut unde deleniti soluta ab aperiam sunt ea, temporibus est rerum quisquam nostrum. Qui!
@@ -79,7 +104,9 @@
     Dolorum exercitationem sit, inventore aperiam ipsam perspiciatis ab et eaque animi! Necessitatibus atque, nostrum laborum adipisci voluptatibus sint vel dolor soluta tenetur suscipit, enim quam. A alias inventore assumenda voluptatum.
     Quo labore tenetur in dolorem amet nihil enim eius accusamus sed, a maiores illo illum doloribus temporibus repellendus necessitatibus autem cum est quia. Quas velit odio voluptates deleniti necessitatibus perferendis.
     Ea pariatur iusto impedit accusantium praesentium fugiat illum molestias ipsa optio, necessitatibus commodi amet autem dolorem reprehenderit inventore nesciunt. Nam ducimus quos placeat aliquam aliquid doloremque exercitationem modi libero aspernatur.
-    Officia, expedita, modi enim ut, omnis illum quo sed debitis quia at iusto. Quaerat, nihil minus magnam laudantium hic aliquid libero excepturi consequatur unde maxime fugiat! Totam iusto cumque ipsa.</div>
+    Officia, expedita, modi enim ut, omnis illum quo sed debitis quia at iusto. Quaerat, nihil minus magnam laudantium hic aliquid libero excepturi consequatur unde maxime fugiat! Totam iusto cumque ipsa.
+  </div>
+</div>
     <script>
       // function test() {
       //   let side = document.querySelector("cvn-sidebar-menu");

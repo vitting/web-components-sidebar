@@ -1,9 +1,14 @@
 <link rel="import" href="../polymer/polymer-element.html">
 <link rel="import" href="cvn-sidebar-style.html">
 
+<!-- https://developer.mozilla.org/en-US/docs/Web/Web_Components/Shadow_DOM -->
+<!-- https://www.polymer-project.org/2.0/docs/devguide/feature-overview -->
+
+<!--THE WEB COMPONENT SHADOWROOT -->
 <dom-module id="cvn-sidebar">
   <template>
-    <style include="sidebar-style">
+    <!-- THE WEB COMPONENT STYLES AND INCLUDED STYLE-->
+    <style include="sidebar-style"> /* include="sidebar-style" includes shared style from cvn-sidebar-style.html */
       @keyframes slideOut {
         from {
           transform: translateX(0);
@@ -22,11 +27,11 @@
         }
       }
 
-      :host {
+      :host { /* :host is reference to shadowRoot. Can also be used with selectors :host(selector) {} */
         display: block;
       }
 
-      #cvnSidebarContainer {
+      #cvnSidebar {
         position: fixed;
         top: 0;
         left: 0;
@@ -59,75 +64,115 @@
         margin-right: 10px;
       }
     </style>
-    <div id="cvnSidebarContainer" class="bgcolor-primary-0">
+    
+    <!-- THE WEB COMPONENT HTML -->
+    <div id="cvnSidebar" class="bgcolor-primary-0 cvn-sidebar">
       <header>
-        <button id="cvnSidebarClose" class="bgcolor-primary-3 hover-bgcolor-primary-1" type="button" on-click="_closeSidebar">&times;</button>
+        <button id="cvnSidebarClose" class="bgcolor-primary-3 hover-bgcolor-primary-1 cvn-sidebar-close" type="button" on-click="_closeSidebar">&times;</button>
       </header>  
-      <div id="cvnSidebarMenuItems">
-        <slot></slot>        
+      <div id="cvnSidebarMenuItems" class="cvn-sidebar-menu-items">
+        <slot></slot> <!-- Content replacements -->       
       </div>
     </div>
   </template>
 
+  <!-- THE WEB COMPONENT JAVSCRIPT -->
   <script>
+    // Polymer.Element that the class extends is Polymer helper functions
     class CvnSidebar extends Polymer.Element {
-      static get is() { return 'cvn-sidebar'; }
+      static get is() { return 'cvn-sidebar'; } // Polymer setup. Initial creation of Web Component
+
+       // Polymer setup. Custom properties on Element = <element my-custom-property="value"></element>
+       // Documentation: https://www.polymer-project.org/2.0/docs/devguide/properties
       static get properties() {
         return {
-          show: {
+          // Property name. In javascript properties is written as camelCase and used on element write in dash-case/hyphen-case. 
+          // From this class you can reference properties with this.propertyname.
+          show: { 
+            type: String, // Type of property. Is serialized from string on element. Bug in Polymer 2. If you uses type: Boolean, value isn't serialized and is stil a string.
+            value: "false", // Default value
+            reflectToAttribute: true, // If the property value is changed from code the change will reflect to property of element if read from Javscript 
+            observer: "_openHideSidebar" // Simple observer. Call function if property value is changed. Function signature functionname(newValue, oldValue) {}
+          },
+          closeOnOutsideClick: { //Another property
             type: String,
             value: "false",
-            reflectToAttribute: true,
-            observer: "_openHideSidebar"
           }
         };
       }
 
-      ready() {
-        super.ready();
+      // Event fired when this element ready in DOM
+      ready() { 
+        super.ready(); // Important!! super.ready()
         
-        this.$.cvnSidebarContainer.addEventListener("animationend", this._sendEvents.bind(this));
+        // Animation ended event
+        // Use bind(this) or arrow function to get corrent reference to this element
+        // The syntax this$.xxxxxx = direct reference to shadow dom element Id's = this.shadowRoot.querySelector("#xxxxxx");
+        this.$.cvnSidebar.addEventListener("animationend", this._animationEnded.bind(this)); 
       }
 
-      _sendEvents() {
+
+      // Method: Animation ended event
+      _animationEnded() {
         if (this.show === "false") {  
-          this.dispatchEvent(new CustomEvent("sidebar-closed"));
-          //this.$.cvnSidebarContainer.style.display = "none";
+          this.dispatchEvent(new CustomEvent("sidebar-closed")); // Send custom event to client
         } else if (this.show === "true") {
-          this.dispatchEvent(new CustomEvent("sidebar-open"));
+          this.dispatchEvent(new CustomEvent("sidebar-open")); // Send custom event to client
+          this._openSidebarEvents();
         }
       }
 
+      // Method
       _closeSidebar() {
-        this.dispatchEvent(new CustomEvent("sidebar-closing"));
-        this.$.cvnSidebarContainer.style.animation = "slideOut 500ms ease-in 0s 1 forwards";
+        this.dispatchEvent(new CustomEvent("sidebar-closing")); // Send custom event to client
+        this.$.cvnSidebar.style.animation = "slideOut 500ms ease-in 0s 1 forwards";
         this.show = "false";
       }
-
+      
+      // Method
       _openSidebar() {        
-        this.dispatchEvent(new CustomEvent("sidebar-opening"));
-        this.$.cvnSidebarContainer.style.display = "block";
-        this.$.cvnSidebarContainer.style.animation = "slideIn 500ms ease-in 0s 1 forwards";
+        this.dispatchEvent(new CustomEvent("sidebar-opening")); // Send custom event to client
+        this.$.cvnSidebar.style.display = "block";
+        this.$.cvnSidebar.style.animation = "slideIn 500ms ease-in 0s 1 forwards";
         this.show = "true";
       }
 
+      // Method
+      _openSidebarEvents() {
+        if (this.closeOnOutsideClick === "true") {
+          document.addEventListener("click", (e) => {
+              if (this.show === "true") {
+                let sidebar = this.shadowRoot.querySelector("#cvnSidebar");
+                if (e.clientX > sidebar.clientWidth) {
+                  this.show = "false";
+                }
+              }
+              
+          }, {once: true});
+        }
+      }
+
+      // Method: Called from property show observer
+      // On property initializing newValue has a value but oldValue will be undefined.
       _openHideSidebar(newValue, oldValue) {
         if (oldValue) {
           if (newValue === "true") {
-            this._openSidebar();
+            this._openSidebar()
           } else if (newValue === "false") {
             this._closeSidebar();
           }
         } else { //Init
           if (newValue === "true") {
-            this.$.cvnSidebarContainer.style.display = "block";
+            this.$.cvnSidebar.style.display = "block";
+            this._openSidebarEvents();
           } else if (newValue === "false") {
-            this.$.cvnSidebarContainer.style.display = "none";
+            this.$.cvnSidebar.style.display = "none";
           }
         }
       }
     }
 
+    // Standard Web component initializing
     window.customElements.define(CvnSidebar.is, CvnSidebar);
   </script>
 </dom-module>

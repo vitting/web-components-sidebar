@@ -1,8 +1,13 @@
 <link rel="import" href="../polymer/polymer-element.html">
 <link rel="import" href="cvn-sidebar-style.html">
 
+<!-- https://developer.mozilla.org/en-US/docs/Web/Web_Components/Shadow_DOM -->
+<!-- https://www.polymer-project.org/2.0/docs/devguide/feature-overview -->
+
+<!--THE WEB COMPONENT SHADOWROOT -->
 <dom-module id="cvn-sidebar-user">
     <template>
+        <!-- THE WEB COMPONENT STYLES AND INCLUDED STYLE-->
         <style include="sidebar-style">
              :host {
                 display: block;
@@ -30,7 +35,9 @@
                 margin-bottom: 5px;
             }
         </style>
-        <div id="cvnSidebarUser" class="">
+
+        <!-- THE WEB COMPONENT HTML -->
+        <div id="cvnSidebarUser" class="cvn-sidebar-user">
             <div><img src$="[[importPath]]images/face.png"></div>
             <div class="sidebar-user-name">
                 <div class="sidebar-user-loggedin color-primary-1">Logget ind som:</div>
@@ -40,6 +47,7 @@
         </div>
     </template>
 
+    <!-- THE WEB COMPONENT JAVSCRIPT -->
     <script>
         class CvnSidebarUser extends Polymer.Element {
             static get is() {
@@ -47,15 +55,26 @@
             }
             static get properties() {
                 return {
-                    show: {
-                        type: Boolean,
-                        value: true
+                    showLoginText: {
+                        type: String,
+                        value: "false",
+                        reflectToAttribute: true,
+                        observer: "_showHideLoggedInText"
                     }
                 };
             }
 
             ready() {
                 super.ready();
+            }
+
+            _showHideLoggedInText(newValue) {
+                const text = this.$.cvnSidebarUser.querySelector(".sidebar-user-loggedin");
+                if (newValue === "true") {
+                    text.style.display = "block";
+                } else {
+                    text.style.display = "none";
+                }
             }
         }
 

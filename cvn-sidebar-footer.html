@@ -1,8 +1,13 @@
 <link rel="import" href="../polymer/polymer-element.html">
 <link rel="import" href="cvn-sidebar-style.html">
 
+<!-- https://developer.mozilla.org/en-US/docs/Web/Web_Components/Shadow_DOM -->
+<!-- https://www.polymer-project.org/2.0/docs/devguide/feature-overview -->
+
+<!--THE WEB COMPONENT SHADOWROOT -->
 <dom-module id="cvn-sidebar-footer">
   <template>
+    <!-- THE WEB COMPONENT STYLES AND INCLUDED STYLE-->
     <style include="sidebar-style">
       :host {
         display: block;
@@ -16,9 +21,12 @@
         font-size: 0.8em;
       }
     </style>
-    <div id="cvnSidebarFooter" class="bgcolor-primary-3 color-primary-2"><slot></slot></div>
+
+    <!-- THE WEB COMPONENT HTML -->
+    <div id="cvnSidebarFooter" class="bgcolor-primary-3 color-primary-2 cvn-sidebar-footer"><slot></slot></div>
   </template>
 
+  <!-- THE WEB COMPONENT JAVSCRIPT -->
   <script>
     class CvnSidebarFooter extends Polymer.Element {
       static get is() { return 'cvn-sidebar-footer'; }
